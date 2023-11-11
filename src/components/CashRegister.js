@@ -8,7 +8,7 @@ export default function CashRegister({ authToken }) {
     const [registerEntries, setRegisterEntries] = useState([]);
 
     const handleButtonClick = (value) => {
-        const decimalRegexCheck = /^\d*\.?\d{3,}$/
+        const decimalRegexCheck = new RegExp(/^\d*\.\d{3,}$/)
         const periodRegexCheck = new RegExp(/\./)
         let newDisplayContent = "";
 
@@ -22,6 +22,7 @@ export default function CashRegister({ authToken }) {
                 // remove last character from display content
                 newDisplayContent = displayContent.slice(0, -1);
                 setDisplayContent(newDisplayContent)
+                break;
 
             case "ADD":
                 // check if display is empty
@@ -40,6 +41,7 @@ export default function CashRegister({ authToken }) {
                 // reset display
                 newDisplayContent = "";
                 setDisplayContent(newDisplayContent);
+                break;
 
             case ".":
                 // check if period is in the display
