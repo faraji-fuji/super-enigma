@@ -12,7 +12,7 @@ export default function Authentication({ handleAuthentication }) {
     isLogin ? action = "Login" : action = "Register"
 
     const handleChange = (event) => {
-        setCredentials({ ...credentials, [event.target.name]: [event.target.value] })
+        setCredentials({ ...credentials, [event.target.name]: event.target.value })
     }
 
     const handleAuthActionButtonClick = () => {
@@ -24,7 +24,7 @@ export default function Authentication({ handleAuthentication }) {
 
         if (isLogin) {
             // get token and store in sessionStorage
-            axios.post("http://127.0.0.1:8000/api-token-auth", credentials)
+            axios.post("http://127.0.0.1:8000/api-token-auth/", credentials)
                 .then((response) => {
                     sessionStorage.setItem("authToken", response.data.token);
                     handleAuthentication();
@@ -34,7 +34,7 @@ export default function Authentication({ handleAuthentication }) {
                 })
         } else {
             // register
-            axios.post("http://127.0.0.1:8000/register", credentials)
+            axios.post("http://127.0.0.1:8000/users/", credentials)
                 .then((response) => {
                     setIsLogin(!isLogin)
                 })
