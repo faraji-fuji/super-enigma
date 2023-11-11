@@ -10,12 +10,12 @@ function App() {
   const authToken = sessionStorage.getItem('authToken')
 
   const handleAuthentication = () => {
-    setIsAuthenticated(true)
+    setIsAuthenticated(!isAuthenticated)
   }
 
   return (
     isAuthenticated || authToken ?
-      <CashRegister authToken={authToken} /> :
+      <CashRegister authToken={authToken} handleAuthentication={handleAuthentication} /> :
       <Authentication handleAuthentication={handleAuthentication} />
   );
 }
