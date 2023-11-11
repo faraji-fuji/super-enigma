@@ -1,12 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Display from './Display';
 import CustomButton from './CustomButton';
 import Register from './Register';
+import Logout from './Logout';
 import axios from 'axios';
 
-export default function CashRegister({ authToken }) {
+export default function CashRegister({ authToken, handleAuthentication }) {
     const [displayContent, setDisplayContent] = useState("");
     const [registerEntries, setRegisterEntries] = useState([]);
+    const [retrieve, setRetrieve] = useState(false);
+    const headers = { Authorization: `Token ${authToken}` }
+
+    // fetch entries
+    useEffect(() => {
+        const fetchData = async () => {
+            axios.get('http://127.0.0.1:8000/entries', { headers })
+                .then((response) => {
+                    setRegisterEntries(response.data);
+                })
+                .catch((error) => {
+                    console.log(error.response.status)
+
+                    if (error.response.status === 401) {
+                        sessionStorage.clear()
+                    }
+                })
+
+            console.log("fetching entries..")
+        };
+
+        fetchData();
+    }, [retrieve]);
 
     const handleButtonClick = (value) => {
         const decimalRegexCheck = new RegExp(/^\d*\.\d{3,}$/)
@@ -31,25 +55,17 @@ export default function CashRegister({ authToken }) {
                     break;
                 }
 
-                // add the current display contents to the register entries 
-                let newRegisterEntries = [...registerEntries, displayContent];
-
-                const headers = {
-                    Authorization: `Token ${authToken}`
-                }
-
-                // TODO: send the new entry to the database
+                // send the new entry to the database
                 axios.post("http://localhost:8000/entries/", { value: displayContent }, { headers })
                     .then((response) => {
                         console.log(response);
                     })
                     .catch((error) => {
                         console.log(error);
-
                     })
 
-                // update register entries
-                setRegisterEntries(newRegisterEntries)
+                // trigger retrieval of entries
+                setRetrieve(!retrieve)
 
                 // reset display
                 newDisplayContent = "";
@@ -89,6 +105,24 @@ export default function CashRegister({ authToken }) {
         }
     }
 
+    const handleLogoutClick = () => {
+        const headers = {
+            Authorization: `Token ${authToken}`
+        }
+
+        axios.post("http://127.0.0.1:8000/logout/", {}, { headers })
+            .then((response) => {
+                console.log("Logged out")
+
+                sessionStorage.clear();
+                handleAuthentication();
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
+
 
     return (
         <div>
@@ -112,6 +146,8 @@ export default function CashRegister({ authToken }) {
             <CustomButton value={"ADD"} handleButtonClick={() => handleButtonClick("ADD")} />
 
             <Register registerEntries={registerEntries} />
+
+            <Logout authToken={authToken} handleLogoutClick={handleLogoutClick} />
 
         </div>
     )
