@@ -5,7 +5,9 @@ export default function Logout({ authToken, handleLogoutClick }) {
     return (
         <button
             className="logout-button"
-            onClick={handleLogoutClick}>Logout
+            onClick={handleLogoutClick}
+        >
+            Logout
         </button>
     )
 }
