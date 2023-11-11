@@ -27,6 +27,7 @@ export default function Authentication({ handleAuthentication }) {
             axios.post("http://127.0.0.1:8000/api-token-auth/", credentials)
                 .then((response) => {
                     sessionStorage.setItem("authToken", response.data.token);
+                    sessionStorage.setItem("username", credentials.username);
                     handleAuthentication();
                 })
                 .catch((error) => {
