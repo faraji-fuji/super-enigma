@@ -2,8 +2,8 @@ export default function Register({ registerEntries }) {
     // calculate total
     let total = 0;
 
-    for (const entry in registerEntries) {
-        total += parseFloat(registerEntries)
+    for (const entry of registerEntries) {
+        total += parseFloat(entry)
     }
 
     return (
@@ -15,6 +15,6 @@ export default function Register({ registerEntries }) {
 }
 
 function ListEntries({ registerEntries }) {
-    const listItems = registerEntries.map(entry => <li>{entry}</li>)
-    return <ul>{listItems}</ul>
+    const listItems = registerEntries.map(entry => <li key={entry.id}>{entry}</li>)
+    return <ul >{listItems}</ul>
 }
