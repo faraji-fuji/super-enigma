@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Display from './Display';
 import CustomButton from './CustomButton';
 import Register from './Register';
+import axios from 'axios';
 
 export default function CashRegister({ authToken }) {
     const [displayContent, setDisplayContent] = useState("");
@@ -33,7 +34,19 @@ export default function CashRegister({ authToken }) {
                 // add the current display contents to the register entries 
                 let newRegisterEntries = [...registerEntries, displayContent];
 
+                const headers = {
+                    Authorization: `Token ${authToken}`
+                }
+
                 // TODO: send the new entry to the database
+                axios.post("http://localhost:8000/entries/", { value: displayContent }, { headers })
+                    .then((response) => {
+                        console.log(response);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+
+                    })
 
                 // update register entries
                 setRegisterEntries(newRegisterEntries)
