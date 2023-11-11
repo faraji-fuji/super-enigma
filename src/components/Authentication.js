@@ -1,6 +1,7 @@
 import { useState } from "react"
 import axios from "axios"
 import AuthActionButton from "./AuthActionButton"
+import "./Authentication.css"
 
 
 export default function Authentication({ handleAuthentication }) {
@@ -8,8 +9,7 @@ export default function Authentication({ handleAuthentication }) {
     const [isLogin, setIsLogin] = useState(true)
 
     // check if we're logging in or registering
-    let action = "";
-    isLogin ? action = "Login" : action = "Register"
+    let action = isLogin ? "Login" : "Register"
 
     const handleChange = (event) => {
         setCredentials({ ...credentials, [event.target.name]: event.target.value })
@@ -31,7 +31,9 @@ export default function Authentication({ handleAuthentication }) {
                     handleAuthentication();
                 })
                 .catch((error) => {
-                    console.log(error)
+                    if (error.response.status === 400) {
+                        alert("Incorrect username or password")
+                    }
                 })
         } else {
             // register
@@ -40,17 +42,18 @@ export default function Authentication({ handleAuthentication }) {
                     setIsLogin(!isLogin)
                 })
                 .catch((error) => {
-                    console.log(error)
+                    console.log(error.response)
                 })
         }
     }
 
     return (
-        <div>
+        <div className="container">
             <form method='POST' onSubmit={handleSubmit}>
-                <label>Email</label>
 
+                <label className="form-label">Email</label>
                 <input
+                    className="form-input"
                     onChange={handleChange}
                     type='email'
                     required
@@ -58,8 +61,9 @@ export default function Authentication({ handleAuthentication }) {
                     id='username'
                 />
 
-                <label>Password</label>
+                <label className="form-label">Password</label>
                 <input
+                    className="form-input"
                     onChange={handleChange}
                     type='password'
                     required
@@ -67,10 +71,11 @@ export default function Authentication({ handleAuthentication }) {
                     id='password'
                 />
 
-                <button type='submit'>{action}</button>
+                <button className="form-button" type='submit'>{action}</button>
             </form>
 
             <AuthActionButton isLogin={isLogin} handleAuthActionButtonClick={handleAuthActionButtonClick} />
+
         </div>
     )
 }

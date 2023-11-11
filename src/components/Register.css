@@ -1,0 +1,31 @@
+/* Style for the scrollable container */
+.register-container {
+    max-height: 300px;
+    /* Set your preferred maximum height */
+    overflow-y: auto;
+}
+
+/* Style for the list of entries */
+.list-entries {
+    list-style: none;
+    padding: 0;
+}
+
+/* Style for individual list items */
+.list-item {
+    border-bottom: 1px solid #ccc;
+    padding: 8px;
+    margin-right: 10px;
+    list-style: none;
+    align-items: right;
+    text-align: right;
+}
+
+/* Style for the total section */
+.total-section {
+    margin-top: 10px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-right: 10px;
+    text-align: right;
+}

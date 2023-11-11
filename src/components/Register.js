@@ -1,3 +1,5 @@
+import "./Register.css"
+
 export default function Register({ registerEntries }) {
     // calculate total
     let total = 0;
@@ -7,15 +9,18 @@ export default function Register({ registerEntries }) {
     }
 
     return (
-        <div>
-            <ListEntries registerEntries={registerEntries} />
+        <div className="register-container">
+            <ListEntries
+                className="list-entries"
+                registerEntries={registerEntries} />
             <hr />
-            <div>Total: KES {total}</div>
+            <div className="total-section">Total: KES {total}</div>
         </div>
     )
 }
 
 function ListEntries({ registerEntries }) {
-    const listItems = registerEntries.map((entry) => <li key={entry.id}>{entry.value}</li>)
+    const listItems = registerEntries.map((entry) =>
+        <li className="list-item" key={entry.id}>{entry.value}</li>)
     return <ul >{listItems}</ul>
 }

@@ -4,6 +4,7 @@ import CustomButton from './CustomButton';
 import Register from './Register';
 import Logout from './Logout';
 import axios from 'axios';
+import "./CashRegister.css"
 
 export default function CashRegister({ authToken, handleAuthentication }) {
     const [displayContent, setDisplayContent] = useState("");
@@ -33,6 +34,7 @@ export default function CashRegister({ authToken, handleAuthentication }) {
     }, [retrieve]);
 
     const handleButtonClick = (value) => {
+        // regex to check for decimal places and periods in the input
         const decimalRegexCheck = new RegExp(/^\d*\.\d{3,}$/)
         const periodRegexCheck = new RegExp(/\./)
         let newDisplayContent = "";
@@ -122,28 +124,44 @@ export default function CashRegister({ authToken, handleAuthentication }) {
             })
     }
 
-
-
     return (
-        <div>
-            <h1>Cash Register</h1>
+        <div className='container'>
+            <h1 className='flex-item'>Cash Register</h1>
 
             <Display displayContent={displayContent} />
 
-            <CustomButton value={"1"} handleButtonClick={() => handleButtonClick("1")} />
-            <CustomButton value={"2"} handleButtonClick={() => handleButtonClick("2")} />
-            <CustomButton value={"3"} handleButtonClick={() => handleButtonClick("3")} />
-            <CustomButton value={"4"} handleButtonClick={() => handleButtonClick("4")} />
-            <CustomButton value={"5"} handleButtonClick={() => handleButtonClick("5")} />
-            <CustomButton value={"6"} handleButtonClick={() => handleButtonClick("6")} />
-            <CustomButton value={"7"} handleButtonClick={() => handleButtonClick("7")} />
-            <CustomButton value={"8"} handleButtonClick={() => handleButtonClick("8")} />
-            <CustomButton value={"9"} handleButtonClick={() => handleButtonClick("9")} />
-            <CustomButton value={"DEL"} handleButtonClick={() => handleButtonClick("DEL")} />
-            <CustomButton value={"0"} handleButtonClick={() => handleButtonClick("0")} />
-            {/* period button to simplify adding cents */}
-            <CustomButton value={"."} handleButtonClick={() => handleButtonClick(".")} />
-            <CustomButton value={"ADD"} handleButtonClick={() => handleButtonClick("ADD")} />
+            <div className='flex-item'>
+                <div className='btn-group'>
+                    <CustomButton value={"1"} handleButtonClick={() => handleButtonClick("1")} />
+                    <CustomButton value={"2"} handleButtonClick={() => handleButtonClick("2")} />
+                    <CustomButton value={"3"} handleButtonClick={() => handleButtonClick("3")} />
+                </div>
+
+                <div className='btn-group'>
+                    <CustomButton value={"4"} handleButtonClick={() => handleButtonClick("4")} />
+                    <CustomButton value={"5"} handleButtonClick={() => handleButtonClick("5")} />
+                    <CustomButton value={"6"} handleButtonClick={() => handleButtonClick("6")} />
+                </div>
+
+                <div className='btn-group'>
+                    <CustomButton value={"7"} handleButtonClick={() => handleButtonClick("7")} />
+                    <CustomButton value={"8"} handleButtonClick={() => handleButtonClick("8")} />
+                    <CustomButton value={"9"} handleButtonClick={() => handleButtonClick("9")} />
+                </div>
+
+                <div className='btn-group'>
+                    <CustomButton value={"DEL"} handleButtonClick={() => handleButtonClick("DEL")} />
+                    <CustomButton value={"0"} handleButtonClick={() => handleButtonClick("0")} />
+                    {/* period button to simplify adding cents */}
+                    <CustomButton value={"."} handleButtonClick={() => handleButtonClick(".")} />
+                </div>
+
+                <div className='btn-group'>
+                    <CustomButton className="" value={"ADD"} handleButtonClick={() => handleButtonClick("ADD")} />
+                </div>
+            </div>
+
+
 
             <Register registerEntries={registerEntries} />
 
