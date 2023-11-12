@@ -12,24 +12,26 @@ export default function CashRegister({ authToken, handleAuthentication }) {
     const [retrieve, setRetrieve] = useState(false);
     const headers = { Authorization: `Token ${authToken}` }
 
-    // fetch entries
+
+
+    const fetchData = async () => {
+        axios.get('http://127.0.0.1:8000/entries', { headers })
+            .then((response) => {
+                setRegisterEntries(response.data);
+            })
+            .catch((error) => {
+                console.log(error.response.status)
+
+                if (error.response.status === 401) {
+                    sessionStorage.clear()
+                    handleAuthentication()
+                }
+            })
+        console.log("fetching entries..")
+    };
+
+    // fetch entries when retrieve changes
     useEffect(() => {
-        const fetchData = async () => {
-            axios.get('http://127.0.0.1:8000/entries', { headers })
-                .then((response) => {
-                    setRegisterEntries(response.data);
-                })
-                .catch((error) => {
-                    console.log(error.response.status)
-
-                    if (error.response.status === 401) {
-                        sessionStorage.clear()
-                    }
-                })
-
-            console.log("fetching entries..")
-        };
-
         fetchData();
     }, [retrieve]);
 
@@ -61,13 +63,13 @@ export default function CashRegister({ authToken, handleAuthentication }) {
                 axios.post("http://localhost:8000/entries/", { value: displayContent }, { headers })
                     .then((response) => {
                         console.log(response);
+
+                        // trigger fetching new entries
+                        setRetrieve(!retrieve)
                     })
                     .catch((error) => {
                         console.log(error);
                     })
-
-                // trigger retrieval of entries
-                setRetrieve(!retrieve)
 
                 // reset display
                 newDisplayContent = "";
