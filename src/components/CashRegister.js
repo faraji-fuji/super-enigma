@@ -10,10 +10,11 @@ export default function CashRegister({ authToken, handleAuthentication }) {
     const [displayContent, setDisplayContent] = useState("");
     const [registerEntries, setRegisterEntries] = useState([]);
     const [retrieve, setRetrieve] = useState(false);
+    const apiUrl = process.env.REACT_APP_API_URL;
     const headers = { Authorization: `Token ${authToken}` }
 
     const fetchData = async () => {
-        axios.get('http://127.0.0.1:8000/entries', { headers })
+        axios.get(`${apiUrl}/entries/`, { headers })
             .then((response) => {
                 setRegisterEntries(response.data);
             })
@@ -58,7 +59,7 @@ export default function CashRegister({ authToken, handleAuthentication }) {
                 }
 
                 // send the new entry to the database
-                axios.post("http://localhost:8000/entries/", { value: displayContent }, { headers })
+                axios.post(`${apiUrl}/entries/`, { value: displayContent }, { headers })
                     .then((response) => {
                         console.log(response);
 
@@ -114,7 +115,7 @@ export default function CashRegister({ authToken, handleAuthentication }) {
     }
 
     const handleLogoutClick = () => {
-        axios.post("http://127.0.0.1:8000/logout/", {}, { headers })
+        axios.post(`${apiUrl}/logout/`, {}, { headers })
             .then((response) => {
                 console.log("Logged out")
             })
