@@ -28,6 +28,7 @@ export default function Authentication({ handleAuthentication }) {
                 .then((response) => {
                     sessionStorage.setItem("authToken", response.data.token);
                     sessionStorage.setItem("username", credentials.username);
+                    sessionStorage.setItem("isAuthenticated", true)
                     handleAuthentication();
                 })
                 .catch((error) => {
