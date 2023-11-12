@@ -27,6 +27,7 @@
     flex-direction: column;
     min-width: 300px;
     background-color: rgb(219, 219, 219);
+    margin-top: 8%;
 }
 
 .flex-item {
