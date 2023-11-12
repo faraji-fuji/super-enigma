@@ -130,7 +130,6 @@ export default function CashRegister({ authToken, handleAuthentication }) {
 
     return (
         <div className='container'>
-            <h1 className='flex-item'>Cash Register</h1>
 
             <Display displayContent={displayContent} />
 
