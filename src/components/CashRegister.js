@@ -12,8 +12,6 @@ export default function CashRegister({ authToken, handleAuthentication }) {
     const [retrieve, setRetrieve] = useState(false);
     const headers = { Authorization: `Token ${authToken}` }
 
-
-
     const fetchData = async () => {
         axios.get('http://127.0.0.1:8000/entries', { headers })
             .then((response) => {
@@ -69,6 +67,12 @@ export default function CashRegister({ authToken, handleAuthentication }) {
                     })
                     .catch((error) => {
                         console.log(error);
+
+                        // handle authentication if unauthorized
+                        if (error.response.status === 401) {
+                            sessionStorage.clear()
+                            handleAuthentication()
+                        }
                     })
 
                 // reset display
@@ -110,19 +114,16 @@ export default function CashRegister({ authToken, handleAuthentication }) {
     }
 
     const handleLogoutClick = () => {
-        const headers = {
-            Authorization: `Token ${authToken}`
-        }
-
         axios.post("http://127.0.0.1:8000/logout/", {}, { headers })
             .then((response) => {
                 console.log("Logged out")
-
-                sessionStorage.clear();
-                handleAuthentication();
             })
             .catch((error) => {
                 console.log(error)
+            })
+            .finally(() => {
+                sessionStorage.clear();
+                handleAuthentication();
             })
     }
 
@@ -159,16 +160,12 @@ export default function CashRegister({ authToken, handleAuthentication }) {
                 </div>
 
                 <div className='btn-group'>
-                    <CustomButton className="" value={"ADD"} handleButtonClick={() => handleButtonClick("ADD")} />
+                    <CustomButton value={"ADD"} handleButtonClick={() => handleButtonClick("ADD")} />
                 </div>
             </div>
 
-
-
             <Register registerEntries={registerEntries} />
-
             <Logout authToken={authToken} handleLogoutClick={handleLogoutClick} />
-
         </div>
     )
 
