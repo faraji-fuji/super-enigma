@@ -7,6 +7,7 @@ import "./Authentication.css"
 export default function Authentication({ handleAuthentication }) {
     const [credentials, setCredentials] = useState({ username: "", password: "" })
     const [isLogin, setIsLogin] = useState(true)
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     // check if we're logging in or registering
     let action = isLogin ? "Login" : "Register"
@@ -24,7 +25,7 @@ export default function Authentication({ handleAuthentication }) {
 
         if (isLogin) {
             // get token and store in sessionStorage
-            axios.post("http://127.0.0.1:8000/api-token-auth/", credentials)
+            axios.post(`${apiUrl}/api-token-auth/`, credentials)
                 .then((response) => {
                     sessionStorage.setItem("authToken", response.data.token);
                     sessionStorage.setItem("username", credentials.username);
@@ -38,12 +39,14 @@ export default function Authentication({ handleAuthentication }) {
                 })
         } else {
             // register
-            axios.post("http://127.0.0.1:8000/users/", credentials)
+            axios.post(`${apiUrl}/users/`, credentials)
                 .then((response) => {
                     setIsLogin(!isLogin)
                 })
                 .catch((error) => {
-                    console.log(error.response)
+                    if (error.response.status === 400) {
+                        alert(error.response.data.detail)
+                    }
                 })
         }
     }
