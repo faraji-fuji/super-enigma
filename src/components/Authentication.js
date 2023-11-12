@@ -18,6 +18,7 @@ export default function Authentication({ handleAuthentication }) {
 
     const handleAuthActionButtonClick = () => {
         setIsLogin(!isLogin)
+        setCredentials({ username: "", password: "" })
     }
 
     const handleSubmit = (event) => {
@@ -63,6 +64,7 @@ export default function Authentication({ handleAuthentication }) {
                     required
                     name='username'
                     id='username'
+                    value={credentials.username}
                 />
 
                 <label className="form-label">Password</label>
@@ -73,6 +75,7 @@ export default function Authentication({ handleAuthentication }) {
                     required
                     name='password'
                     id='password'
+                    value={credentials.password}
                 />
 
                 <button className="form-button" type='submit'>{action}</button>
