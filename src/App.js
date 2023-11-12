@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Authentication from './components/Authentication';
 import CashRegister from './components/CashRegister';
@@ -14,7 +13,7 @@ function App() {
   }
 
   return (
-    isAuthenticated || authToken ?
+    sessionStorage.getItem("isAuthenticated") ?
       <CashRegister authToken={authToken} handleAuthentication={handleAuthentication} /> :
       <Authentication handleAuthentication={handleAuthentication} />
   );
