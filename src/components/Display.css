@@ -1,0 +1,12 @@
+.display {
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px 10px;
+    font-size: 24px;
+    text-align: right;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    height: 4vh;
+}
