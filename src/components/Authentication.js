@@ -19,6 +19,7 @@ const login = async (credentials, handleAuthentication) => {
             alert("Incorrect username or password")
         } else {
             alert("An error occurred")
+            console.log(error)
         }
     }
 }
@@ -42,9 +43,6 @@ const register = async (credentials, isLogin, setIsLogin) => {
 export default function Authentication({ handleAuthentication }) {
     const [credentials, setCredentials] = useState({ username: "", password: "" })
     const [isLogin, setIsLogin] = useState(true)
-
-    // check if we're logging in or registering
-    let action = isLogin ? "Login" : "Register"
 
     const handleChange = (event) => {
         setCredentials({ ...credentials, [event.target.name]: event.target.value })
@@ -89,11 +87,18 @@ export default function Authentication({ handleAuthentication }) {
                     value={credentials.password}
                 />
 
-                <button className="form-button" type='submit'>{action}</button>
+                <button
+                    className="form-button"
+                    type='submit'
+                >
+                    {isLogin ? "Login" : "Register"}
+                </button>
             </form>
 
-            <AuthActionButton isLogin={isLogin} handleAuthActionButtonClick={handleAuthActionButtonClick} />
-
+            <AuthActionButton
+                isLogin={isLogin}
+                handleAuthActionButtonClick={handleAuthActionButtonClick}
+            />
         </div>
     )
 }
