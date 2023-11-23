@@ -12,7 +12,8 @@ export default function Register({ registerEntries }) {
         <div className="register-container">
             <ListEntries
                 className="list-entries"
-                registerEntries={registerEntries} />
+                registerEntries={registerEntries}
+            />
             <hr />
             <div className="total-section">Total: KES {total}</div>
         </div>
