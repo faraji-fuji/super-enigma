@@ -1,7 +1,6 @@
-import axios from "axios"
 import "./Logout.css"
 
-export default function Logout({ authToken, handleLogoutClick }) {
+export default function Logout({ handleLogoutClick }) {
     return (
         <button
             className="logout-button"
