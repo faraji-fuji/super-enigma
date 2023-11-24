@@ -9,7 +9,7 @@ import "./CashRegister.css"
 export default function CashRegister({ authToken, handleAuthentication }) {
     const [displayContent, setDisplayContent] = useState("");
     const [registerEntries, setRegisterEntries] = useState([]);
-    const [retrieve, setRetrieve] = useState(false);
+    const [isComponentMounted, setComponentMounted] = useState(false);
     const apiUrl = process.env.REACT_APP_API_URL;
     const headers = { Authorization: `Token ${authToken}` }
 
@@ -139,10 +139,20 @@ export default function CashRegister({ authToken, handleAuthentication }) {
     }
 
     // Hooks
-    // fetch entries when retrieve changes
+    // track mount state
     useEffect(() => {
-        fetchEntries();
-    }, [retrieve]);
+        setComponentMounted(true)
+
+        return () => setComponentMounted(false)
+    })
+
+    // fetch entries when component mounts
+    useEffect(() => {
+        if (isComponentMounted) {
+            fetchEntries();
+        }
+    }, [isComponentMounted]);
+
 
     return (
         <div className='container'>
