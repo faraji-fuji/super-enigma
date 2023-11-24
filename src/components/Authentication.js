@@ -9,9 +9,6 @@ export default function Authentication({ handleAuthentication }) {
     const [isLogin, setIsLogin] = useState(true)
     const apiUrl = process.env.REACT_APP_API_URL;
 
-    // check if we're logging in or registering
-    let action = isLogin ? "Login" : "Register"
-
     const handleChange = (event) => {
         setCredentials({ ...credentials, [event.target.name]: event.target.value })
     }
@@ -21,35 +18,44 @@ export default function Authentication({ handleAuthentication }) {
         setCredentials({ username: "", password: "" })
     }
 
+    // register helper function
+    const register = async () => {
+        try {
+            console.log("sending register request")
+            const response = await axios.post(`${apiUrl}/users/`, credentials)
+            setIsLogin(!isLogin)
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                console.log(error.response.data.detail)
+            } else {
+                console.log(error)
+            }
+        }
+    }
+
+    // login helper function
+    const login = async () => {
+        try {
+            console.log("sending login request")
+            const response = await axios.post(`${apiUrl}/api-token-auth/`, credentials)
+            sessionStorage.setItem("authToken", response.data.token);
+            sessionStorage.setItem("username", credentials.username);
+            sessionStorage.setItem("isAuthenticated", true);
+            handleAuthentication();
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                alert("Incorrect username or password")
+            } else {
+                alert("An error occurred")
+                console.log(error)
+            }
+        }
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault()
 
-        if (isLogin) {
-            // get token and store in sessionStorage
-            axios.post(`${apiUrl}/api-token-auth/`, credentials)
-                .then((response) => {
-                    sessionStorage.setItem("authToken", response.data.token);
-                    sessionStorage.setItem("username", credentials.username);
-                    sessionStorage.setItem("isAuthenticated", true)
-                    handleAuthentication();
-                })
-                .catch((error) => {
-                    if (error.response.status === 400) {
-                        alert("Incorrect username or password")
-                    }
-                })
-        } else {
-            // register
-            axios.post(`${apiUrl}/users/`, credentials)
-                .then((response) => {
-                    setIsLogin(!isLogin)
-                })
-                .catch((error) => {
-                    if (error.response.status === 400) {
-                        alert(error.response.data.detail)
-                    }
-                })
-        }
+        isLogin ? login() : register()
     }
 
     return (
@@ -78,11 +84,18 @@ export default function Authentication({ handleAuthentication }) {
                     value={credentials.password}
                 />
 
-                <button className="form-button" type='submit'>{action}</button>
+                <button
+                    className="form-button"
+                    type='submit'
+                >
+                    {isLogin ? "Login" : "Register"}
+                </button>
             </form>
 
-            <AuthActionButton isLogin={isLogin} handleAuthActionButtonClick={handleAuthActionButtonClick} />
-
+            <AuthActionButton
+                isLogin={isLogin}
+                handleAuthActionButtonClick={handleAuthActionButtonClick}
+            />
         </div>
     )
 }

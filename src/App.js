@@ -13,9 +13,9 @@ function App() {
   }
 
   return (
-    sessionStorage.getItem("isAuthenticated") ?
-      <CashRegister authToken={authToken} handleAuthentication={handleAuthentication} /> :
-      <Authentication handleAuthentication={handleAuthentication} />
+    sessionStorage.getItem("isAuthenticated")
+      ? <CashRegister authToken={authToken} handleAuthentication={handleAuthentication} />
+      : <Authentication handleAuthentication={handleAuthentication} />
   );
 }
 
