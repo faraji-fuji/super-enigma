@@ -1,6 +1,7 @@
 import "./Register.css"
 
 export default function Register({ registerEntries }) {
+
     // calculate total
     let total = 0;
 
