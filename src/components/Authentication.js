@@ -19,16 +19,15 @@ export default function Authentication({ handleAuthentication }) {
     }
 
     // register helper function
-    const register = async (credentials, isLogin, setIsLogin) => {
+    const register = async () => {
         try {
+            console.log("sending register request")
             const response = await axios.post(`${apiUrl}/users/`, credentials)
-            console.log(response)
             setIsLogin(!isLogin)
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                alert(error.response.data.detail)
+                console.log(error.response.data.detail)
             } else {
-                alert("An error occurred")
                 console.log(error)
             }
         }
